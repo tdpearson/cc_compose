@@ -1,0 +1,6 @@
+celery==4
+pymongo==3.4
+paramiko==2.1
+requests==2.13
+https://github.com/ouinformatics/dockertask/zipball/master
+https://github.com/cybercommons/cybercomq/zipball/master

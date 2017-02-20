@@ -1,0 +1,29 @@
+version: '2'
+services:
+  django:
+    build: ./django
+    # command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+            - ./django:/code:rw
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+      - rabbitmq
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - django
+  celery:
+    build: ./celery
+    links:
+      - mongo
+      - rabbitmq
+  mongo:
+    image: mongo
+  rabbitmq:
+    image: rabbitmq
+
