@@ -1,8 +1,8 @@
 version: '2'
 services:
   django:
+    container_name: libmain_api
     build: ./django
-    # command: python manage.py runserver 0.0.0.0:8000
     volumes:
             - ./django:/code:rw
     ports:
@@ -10,7 +10,9 @@ services:
     links:
       - mongo
       - rabbitmq
+      - memcached
   nginx:
+    container_name: libmain_nginx
     build: ./nginx
     ports:
       - "80:80"
@@ -18,12 +20,17 @@ services:
     links:
       - django
   celery:
+    container_name: libmain_celery
     build: ./celery
     links:
       - mongo
       - rabbitmq
   mongo:
+    container_name: libmain_mongo
     image: mongo
   rabbitmq:
+    container_name: libmain_rabbitmq
     image: rabbitmq
-
+  memcached:
+    container_name: libmain_memcache
+    image: memcached
