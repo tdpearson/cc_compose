@@ -1,7 +1,8 @@
-FROM python:3
+FROM python:2.7
 RUN mkdir /code
+ADD . /code
 WORKDIR /code
-ADD requirements.txt /code/
 RUN pip install -r requirements.txt
-ADD . /code/
-CMD ["celery", "-l info", "worker"]
+RUN groupadd -r celery && useradd -r -g celery celery
+USER celery
+CMD ["celery", "worker", "-l", "info"]

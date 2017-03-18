@@ -3,6 +3,8 @@ services:
   django:
     container_name: libmain_api
     build: ./django
+    env_file:
+      - ./config/django_secrets.env
     volumes:
             - ./django:/code:rw
     ports:
@@ -22,15 +24,25 @@ services:
   celery:
     container_name: libmain_celery
     build: ./celery
+    depends_on:
+      - mongo
+      - rabbitmq
+    env_file:
+      - ./config/rmq_secrets.env
+      - ./config/mongo_secrets.env
     links:
       - mongo
       - rabbitmq
   mongo:
     container_name: libmain_mongo
     image: mongo
+    env_file:
+      - ./config/mongo_secrets.env
   rabbitmq:
     container_name: libmain_rabbitmq
     image: rabbitmq
+    env_file:
+      - ./config/rmq_secrets.env
   memcached:
     container_name: libmain_memcache
     image: memcached
